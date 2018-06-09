@@ -21,19 +21,12 @@
  ******************************************************************************/
 package org.norelapi.core;
 
-/**
- * A special kind of Operation Exception where the specified entity alias already
- * exists and cannot be duplicated by the attempted operation.
- */
-public class DuplicateEntityException extends OperationException {
-  private String entityAlias;
+import java.util.Hashtable;
 
-  public DuplicateEntityException(String message, String entityAlias) {
-    super(message);
-    this.entityAlias = entityAlias;
-  }
+public interface Driver {
+  public DriverInfo getInfo();
 
-  public String getEntityAlias() {
-    return entityAlias;
-  }
+  // Internal methods
+  public Connection createConnection(Hashtable<String,Object> config);
+
 }

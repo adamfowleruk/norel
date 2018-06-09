@@ -19,34 +19,47 @@
  * limitations under the License.
  *
  ******************************************************************************/
-package org.norelapi.core;
+package org.norelapi.impl.mongodb;
+
+import org.norelapi.core.Connection;
+import org.norelapi.core.ConnectionException;
+import org.norelapi.core.NoSuchEntityException;
+import org.norelapi.core.Catalog;
+import org.norelapi.core.CatalogInfo;
 
 import java.util.Collection;
-import java.util.ArrayList;
 
 /**
- * Represents the high level information about a NoSQL database connection driver, and its allowed configuration
+ * MongoDB implementation of the NoREL API Connection interface.
  */
-public class DriverInfo {
-  private String driverAlias;
-  private String driverClassname;
-  private ArrayList<ConfigurationPropertyInfo> configurationProperties = new ArrayList<ConfigurationPropertyInfo>();
+public class MongoDBConnection implements Connection {
+  private Hashtable<String,Object> config = null;
 
-  public DriverInfo(String driverAlias,String driverClassname,Collection<ConfigurationPropertyInfo> configurationProperties) {
-    this.driverAlias = driverAlias;
-    this.driverClassname = driverClassname;
-    this.configurationProperties.addAll(configurationProperties);
+  public MongoDBConnection() {
+    // default constructor for dynamic class loading
   }
 
-  public String getAlias() {
-    return driverAlias;
+  protected boolean configure(Hashtable<String,Object> config) {
+    this.config = config;
   }
 
-  public String getClassname() {
-    return driverClassname;
+  public void connect() throws ConnectionException {
+
   }
-  
-  public Collection<ConfigurationPropertyInfo> getConfigurationProperties() {
-    return configurationProperties;
+  public void disconnect() throws ConnectionException {
+
+  }
+  public boolean isConnected() {
+
+  }
+  public void forceDisconnect() throws ConnectionException {
+
+  }
+
+  public Collection<CatalogInfo> listCatalogs() {
+
+  }
+  public Catalog getCatalog(String alias) throws NoSuchEntityException {
+
   }
 }

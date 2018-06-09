@@ -2,7 +2,7 @@
  *
  * NoREL API
  *
- * Copyright (C) 018 by Adam Fowler : http://www.adamfowler.org/
+ * Copyright (C) 2018 by Adam Fowler : http://www.adamfowler.org/
  *
  *******************************************************************************
  *
@@ -40,6 +40,8 @@ import java.io.IOException;
 public class ConnectionManager {
   private TreeSet<DriverInfo> driverInfos = new TreeSet<DriverInfo>();
 
+  private Hashtable<String,Driver> drivers = new Hashtable<String,Driver>();
+
   private TreeSet<ConnectionInfo> connectionInfos = new TreeSet<ConnectionInfo>();
 
   private TreeSet<Connection> connections = new TreeSet<Connection>();
@@ -57,6 +59,14 @@ public class ConnectionManager {
       throw new DuplicateEntityException("Duplicate Driver named '" + name + "'");
     }
     driverInfos.add(new DriverInfo(name,classname,props));
+  }
+
+  public void removeDriver(String name) {
+
+  }
+
+  public void getDriverInfo(String name) {
+
   }
 
   // CONNECTION INSTANCE CONFIGURATION LOADING METHODS
@@ -78,6 +88,17 @@ public class ConnectionManager {
 
   public void addConnectionsFromJson(File jsonFile) throws DuplicateEntityException, IOException {
 
+  }
+
+  public void saveConnectionsToJson(OutputStream jsonOutputStream) throws IOException {
+
+  }
+
+  public void saveConnectionsToJson(File jsonFile) throws IOException {
+    FileOutputStream fos = new FileOutputStream(jsonFile);
+    saveConnectionsToJson(fos);
+    fos.flush();
+    fos.close();
   }
 
   public void addConnectionsFromClasspath() throws DuplicateEntityException, IOException {

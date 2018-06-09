@@ -19,21 +19,34 @@
  * limitations under the License.
  *
  ******************************************************************************/
-package org.norelapi.core;
+package org.norelapi.impl.mongodb;
+
+import org.norelapi.core.Catalog;
+import org.norelapi.core.CatalogInfo;
+import org.norelapi.core.DocumentManager;
 
 /**
- * A special kind of Operation Exception where the specified entity alias already
- * exists and cannot be duplicated by the attempted operation.
+ * Implements the NoREL API Catalog interface for MongoDB.
+ *
+ * In MongoDB, unlike some Document databases, a Collection is the unit of 
+ * storage, not a database. Thus a Catalog in the NoREL API is analogous to a
+ * MongoDB Collection, NOT a Database.
+ *
+ * A Document in MongoDB can only be a member of one Collection. Index settings
+ * are set against a Collection in MongoDB not a Database.
  */
-public class DuplicateEntityException extends OperationException {
-  private String entityAlias;
+public class MongoDBCatalog implements Catalog {
 
-  public DuplicateEntityException(String message, String entityAlias) {
-    super(message);
-    this.entityAlias = entityAlias;
+  public boolean isOpen() {
+
   }
 
-  public String getEntityAlias() {
-    return entityAlias;
+  public CatalogInfo getInfo() {
+
+  }
+
+  public DocumentManager createDocumentManager() {
+    MongoDBDocumentManager mgr = new MongoDBDocumentManager(this);
+    return mgr;
   }
 }

@@ -2,7 +2,7 @@
  *
  * NoREL API
  *
- * Copyright (C) 018 by Adam Fowler : http://www.adamfowler.org/
+ * Copyright (C) 2018 by Adam Fowler : http://www.adamfowler.org/
  *
  *******************************************************************************
  *

@@ -1,0 +1,12 @@
+{
+  "mongodb-local": {
+    "driver": "mongodb",
+    "config": {
+      "connectionString": "localhost",
+      "username": "user",
+      "password": "pass",
+      "database": "default",
+      "sslEnabled": false
+    }
+  }
+}

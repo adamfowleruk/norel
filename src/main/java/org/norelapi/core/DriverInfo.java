@@ -25,17 +25,20 @@ import java.util.Collection;
 import java.util.ArrayList;
 
 /**
- * Represents the high level information about a NoSQL database connection driver, and its allowed configuration
+ * Represents the high level information about a NoSQL database connection 
+ * driver, and its allowed configuration properties
  */
 public class DriverInfo {
   private String driverAlias;
   private String driverClassname;
-  private ArrayList<ConfigurationPropertyInfo> configurationProperties = new ArrayList<ConfigurationPropertyInfo>();
+  private Hashtable<String,ConfigurationPropertyInfo> configurationProperties = new Hashtable<String,ConfigurationPropertyInfo>();
 
   public DriverInfo(String driverAlias,String driverClassname,Collection<ConfigurationPropertyInfo> configurationProperties) {
     this.driverAlias = driverAlias;
     this.driverClassname = driverClassname;
-    this.configurationProperties.addAll(configurationProperties);
+    for (ConfigurationPropertyInfo pinfo: configurationProperties) {
+      this.configurationProperties.put(pinfo.getName(),pinfo);
+    }
   }
 
   public String getAlias() {
@@ -47,6 +50,14 @@ public class DriverInfo {
   }
   
   public Collection<ConfigurationPropertyInfo> getConfigurationProperties() {
-    return configurationProperties;
+    return configurationProperties.entrySet();
+  }
+
+  public Collection<String> getConfigurationKeys() {
+    return configurationProperties.keySet();
+  }
+
+  public ConfigurationPropertyInfo getProperty(String key) {
+    return configurationProperties.get(key);
   }
 }

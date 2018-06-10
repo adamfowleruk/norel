@@ -23,6 +23,20 @@ package org.norelapi.core;
 
 import java.util.Hashtable;
 
+/**
+ * Very thin interface for a Driver. Required for implementation a NoSQL DB
+ * Driver in the NoREL API.
+ *
+ * A Driver implementation should have ZERO class dependencies outside of the
+ * Java runtime and the NoREL API. This is to allow the Driver implementation
+ * to be loaded by the class loader in all circumstances, with no class not
+ * found exceptions and no instantiation exceptions.
+ *
+ * This is required because we need the getInfo() function to always work.
+ * Only the create connection method should throw ClassNotFoundException
+ * when it tries to load or instantiate the Connection implementation class
+ * by name ONLY.
+ */
 public interface Driver {
   public DriverInfo getInfo();
 

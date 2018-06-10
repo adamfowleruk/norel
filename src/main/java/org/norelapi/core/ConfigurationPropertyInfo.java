@@ -25,11 +25,14 @@ package org.norelapi.core;
  * Holds a description of basic configuration (String name, Object value pairs)
  */
 public class ConfigurationPropertyInfo {
+  public enum Type {
+    String("string"),StringArray("string[]"),Long("long"),Double("double")
+  }
   private String name;
-  private Class type;
+  private Type type;
   private String description;
 
-  public ConfigurationPropertyInfo(String name,Class type,String description) {
+  public ConfigurationPropertyInfo(String name,Type type,String description) {
     this.name = name;
     this.type = type;
     this.description = description;
@@ -39,7 +42,7 @@ public class ConfigurationPropertyInfo {
     return name;
   }
 
-  public String getType() {
+  public Type getType() {
     return type;
   }
 
@@ -53,5 +56,24 @@ public class ConfigurationPropertyInfo {
 
   public boolean equals(ConfigurtionPropertyInfo info) {
     return this.name.equals(info.name);
+  }
+
+  public static Type getType(String typeString) {
+    if (Type.String.toString().equals(typeString)) {
+      return Type.String;
+    }
+    if (Type.StringArray.toString().equals(typeString)) {
+      return Type.StringArray;
+    }
+    if (Type.Long.toString().equals(typeString)) {
+      return Type.Long;
+    }
+    if (Type.W3CDateTime.toString().equals(typeString)) {
+      return Type.W3CDateTime;
+    }
+    if (Type.Double.toString().equals(typeString)) {
+      return Type.Double;
+    }
+    return null;
   }
 }

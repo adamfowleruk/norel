@@ -34,6 +34,11 @@ public class InvalidStateException extends OperationException {
     this.requiredStateDescription = requiredStateDescription;
     this.encounteredStateDescription = encounteredStateDescription;
   }
+  public InvalidStateException(String message,String requiredStateDescription,String encounteredStateDescription,Exception chain) {
+    super(message,chain);
+    this.requiredStateDescription = requiredStateDescription;
+    this.encounteredStateDescription = encounteredStateDescription;
+  }
   public String getRequiredState() {
     return requiredStateDescription;
   }

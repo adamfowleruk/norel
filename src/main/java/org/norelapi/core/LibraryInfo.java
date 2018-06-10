@@ -21,11 +21,25 @@
  ******************************************************************************/
 package org.norelapi.core;
 
-public class CatalogInfo {
+/**
+ * Details about an available Library. 
+ *
+ * A Library is a physical unit of storage.
+ * Think real library building. A library has a place for it's index, but it's
+ * contained collection may move around of vary in size within the Library's
+ * building boundaries.
+ *
+ * Some NoSQL databases call this a 'Database', but some, confusingly, call it
+ * a 'Collection'. In this scenario, these databases (MongoDB, Cosmos DB) only
+ * allow a document to be a member of a single collection. Also indexes are
+ * set against a collection. Thus, logically, it is a NoREL API Library,
+ * not a NoREL API Collection.
+ */
+public class LibraryInfo {
   private String alias = "";
   private boolean supportsDocumentManager = true;
 
-  public CatalogInfo(String alias, boolean supportsDocMgr) {
+  public LibraryInfo(String alias, boolean supportsDocMgr) {
     this.alias = alias;
     this.supportsDocumentManager = supportsDocMgr;
   }

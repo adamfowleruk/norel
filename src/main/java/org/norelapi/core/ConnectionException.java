@@ -28,4 +28,7 @@ public class ConnectionException extends OperationException {
   public ConnectionException(String msg) {
     super(msg);
   }
+  public ConnectionException(String msg,Exception chain) {
+    super(msg,chain);
+  }
 }

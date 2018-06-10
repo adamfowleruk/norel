@@ -33,6 +33,11 @@ public class DuplicateEntityException extends OperationException {
     this.entityAlias = entityAlias;
   }
 
+  public DuplicateEntityException(String message, String entityAlias,Exception chain) {
+    super(message,chain);
+    this.entityAlias = entityAlias;
+  }
+
   public String getEntityAlias() {
     return entityAlias;
   }

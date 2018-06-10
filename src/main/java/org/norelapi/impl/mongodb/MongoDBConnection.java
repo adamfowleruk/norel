@@ -22,6 +22,7 @@
 package org.norelapi.impl.mongodb;
 
 import org.norelapi.core.Connection;
+import org.norelapi.core.Connection.Status;
 import org.norelapi.core.ConnectionException;
 import org.norelapi.core.NoSuchEntityException;
 import org.norelapi.core.Catalog;
@@ -34,9 +35,14 @@ import java.util.Collection;
  */
 public class MongoDBConnection implements Connection {
   private Hashtable<String,Object> config = null;
+  private Status status = Status.Initialising;
 
   public MongoDBConnection() {
     // default constructor for dynamic class loading
+  }
+
+  public Status getStatus() {
+
   }
 
   protected boolean configure(Hashtable<String,Object> config) {
@@ -47,9 +53,6 @@ public class MongoDBConnection implements Connection {
 
   }
   public void disconnect() throws ConnectionException {
-
-  }
-  public boolean isConnected() {
 
   }
   public void forceDisconnect() throws ConnectionException {

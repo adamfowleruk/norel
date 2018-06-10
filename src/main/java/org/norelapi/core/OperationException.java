@@ -35,4 +35,7 @@ public class OperationException extends Exception {
   public OperationException(String message) {
     super(message);
   }
+  public OperationException(String message,Exception chain) {
+    super(message,chain);
+  }
 }

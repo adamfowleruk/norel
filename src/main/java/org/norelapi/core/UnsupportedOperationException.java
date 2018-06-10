@@ -28,7 +28,17 @@ package org.norelapi.core;
  * is not supported.
  */
 public class UnsupportedOperationException extends OperationException {
-  public UnsupportedOperationException(String message) {
+  private String operation;
+
+  public UnsupportedOperationException(String message,String operation) {
     super(message);
+    this.operation = operation;
+  }
+  public UnsupportedOperationException(String message,String operation,Exception chain) {
+    super(message,chain);
+    this.operation = operation;
+  }
+  public String getOperation() {
+    return operation;
   }
 }

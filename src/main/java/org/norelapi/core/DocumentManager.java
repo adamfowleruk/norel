@@ -24,7 +24,8 @@ package org.norelapi.core;
 import java.util.Collection;
 
 /**
- * Represents a manager class to perform Document operations on the underlying Catalog
+ * Represents a manager class to perform Document operations on the underlying 
+ * Library.
  */
 public interface DocumentManager {
   // Simple, required, operations

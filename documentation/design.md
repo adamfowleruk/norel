@@ -14,6 +14,8 @@ This document describes the high level design of the NoREL NoSQL database abstra
   - Tuned for performance to place the minimum speed penalty on the library user
   - Applies best-practice from the underlying software vendors, to ensure maximum data throughput and response times
   - Support for underlying connection pooling, safe shutdown (or forced shutdown), and other high scale performance approaches
+- Don't force the use of a particular paradigm
+  - Not everyone likes async processing, so eventually we'll provide both mechanisms, but for now we'll provide just synchronous (as most underlying APIs do the same)
 - Apache 2.0 licensed - allowing for maximum re-use by other libraries and applications, including commercial applications
 
 ## Slightly out of scope

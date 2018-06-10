@@ -32,6 +32,10 @@ public class NoSuchEntityException extends OperationException {
     super(message);
     this.entityAlias = entityAlias;
   }
+  public NoSuchEntityException(String message, String entityAlias,Exception chain) {
+    super(message,chain);
+    this.entityAlias = entityAlias;
+  }
 
   public String getEntityAlias() {
     return entityAlias;

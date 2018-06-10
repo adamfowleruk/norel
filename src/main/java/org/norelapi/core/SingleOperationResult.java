@@ -21,9 +21,21 @@
  ******************************************************************************/
 package org.norelapi.core;
 
+/**
+ * Represents the result of a single operation. E.g. Document add
+ *
+ * Abstract because the underlying database may have its own primitives to handle
+ * retrieving the response reason, necessitating this abstraction.
+ *
+ * Doing otherwise could lead to poor performance. E.g. if getting the full
+ * response required another rountrip to the database server, or a lot of parsing.
+ */
 public abstract class SingleOperationResult extends OperationResult {
   public SingleOperationResult(boolean success,String message,Exception exc) {
     super(success,message,exc);
+  }
+  public SingleOperationResult(boolean success,String message) {
+    super(success,message,null);
   }
   public abstract String getResponseAsString() throws InvalidStateException;
   public abstract InputStream getResponseAsStream() throws InvalidStateException;

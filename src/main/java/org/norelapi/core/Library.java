@@ -22,12 +22,27 @@
 package org.norelapi.core;
 
 /**
- * Represents a single Catalog (Database) of documents
+ * Represents a single Library (Database) of documents. 
+ *
+ * A Library is a physical unit of storage.
+ * Think real library building. A library has a place for it's index, but it's
+ * contained collection may move around of vary in size within the Library's
+ * building boundaries.
+ *
+ * Some NoSQL databases call this a 'Database', but some, confusingly, call it
+ * a 'Collection'. In this scenario, these databases (MongoDB, Cosmos DB) only
+ * allow a document to be a member of a single collection. Also indexes are
+ * set against a collection. Thus, logically, it is a NoREL API Library,
+ * not a NoREL API Collection.
+ *
+ * A Library is the root of all operations on a physical NoSQL database.
+ * In future you may see things like IndexManager, GraphManager, KeyManager
+ * and so on, for multi-model NoSQL databases.
  */
-public interface Catalog {
+public interface Library {
   public boolean isOpen();
 
-  public CatalogInfo getInfo();
+  public LibraryInfo getInfo();
 
   public DocumentManager createDocumentManager();
 }

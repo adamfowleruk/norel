@@ -28,11 +28,15 @@ package org.norelapi.core;
  * Exact connection parameters are managed by a ConnectionFactory class.
  */
 public interface Connection {
+  public enum Status {
+    Initialising,Initialised,Connecting,Connected,Disconnecting,Disconnected,Destroying
+  }
+  public Status getStatus();
+
   public void connect() throws ConnectionException;
   public void disconnect() throws ConnectionException;
-  public boolean isConnected();
   public void forceDisconnect() throws ConnectionException;
 
-  public Collection<CatalogInfo> listCatalogs();
-  public Catalog getCatalog(String alias) throws NoSuchEntityException;
+  public Collection<LibraryInfo> listLibraries();
+  public Library getLibrary(String alias) throws NoSuchEntityException;
 }

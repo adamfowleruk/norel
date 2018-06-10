@@ -1,0 +1,5 @@
+{
+  "mongodb": {
+    "classname": "org.norelapi.impl.mongodb.MongoDBDriver"
+  }
+}

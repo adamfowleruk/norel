@@ -1,0 +1,5 @@
+{
+  "java.configuration.updateBuildConfiguration": "automatic",
+  "checkstyle.enable": true,
+  "checkstyle.checkstylePath": "/Users/adamfowler/checkstyle/checkstyle-8.0-all.jar"
+}

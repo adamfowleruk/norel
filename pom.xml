@@ -1,0 +1,51 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.norelapi.norelapi</groupId>
+  <artifactId>norelapi-pom</artifactId>
+  <packaging>pom</packaging>
+  <version>2.3.2</version>
+  <name>NoREL API for Java</name>
+  <description>The NoREL NoSQL database abstraction layer API for Java.</description>
+  <url>https://github.com/adamfowleruk/norelapi</url>
+  <licenses>
+    <license>
+      <name>The Apache License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <name>Adam Fowler</name>
+      <email>adamfowleruk@gmail.com</email>
+      <organization>adamfowler.org</organization>
+      <organizationUrl>http://adamfowler.org/</organizationUrl>
+    </developer>
+  </developers>
+  <scm>
+    <connection>scm:git:https://github.com/adamfowleruk/norelapi.git</connection>
+    <developerConnection>scm:git:https://github.com/adamfowleruk/norelapi.git</developerConnection>
+    <url>https://github.com/adamfowleruk/norelapi.git</url>
+  </scm>
+
+  <modules>
+    <module>norelapi-core</module>
+    <module>norelapi-samples/mongodb-intro</module>
+  </modules>
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>3.7.0</version>
+          <configuration>
+            <source>1.8</source>
+            <target>1.8</target>
+            <forceJavacCompilerUse>true</forceJavacCompilerUse>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+</project>

@@ -1,5 +1,8 @@
 {
   "mongodb": {
     "classname": "org.norelapi.impl.mongodb.MongoDBDriver"
+  },
+  "dynamodb": {
+    "classname": "org.norelapi.impl.dynamodb.DynamoDBDriver"
   }
 }

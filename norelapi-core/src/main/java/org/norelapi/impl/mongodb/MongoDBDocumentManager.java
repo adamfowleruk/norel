@@ -32,6 +32,7 @@ import com.mongodb.MongoCredential;
 import com.mongodb.client.FindIterable;
 import org.bson.Document;
 
+import org.norelapi.impl.shared.IOUtils;
 import org.norelapi.core.UnsupportedOperationException;
 import org.norelapi.core.DocumentManager;
 import org.norelapi.core.SingleOperationResult;
@@ -62,7 +63,7 @@ public class MongoDBDocumentManager implements DocumentManager {
   public SingleOperationResult createDocument(String id,InputStream docSrc) throws OperationException {
     try {
       // create document and add to MongoDB
-      Document document = Document.parse(readInputStreamIntoString(docSrc));
+      Document document = Document.parse(IOUtils.readInputStreamIntoString(docSrc));
       if (null != id) {
         document.putIfAbsent("_id",id);
       }
@@ -71,25 +72,6 @@ public class MongoDBDocumentManager implements DocumentManager {
     } catch (Exception e) {
       return new GenericSingleOperationResult(false,"Error executing MongoDB listDocuments",e,"");
     }
-  }
-
-  protected static String readInputStreamIntoString(InputStream docSrc) throws OperationException {
-    // read entire json as string in to memory (yuck!) - no built in Document from input stream in MongoDB!?!
-    StringBuilder fileContents = new StringBuilder();
-    Scanner scanner = new Scanner(((Readable)new BufferedReader(new InputStreamReader(docSrc)) )); // ensures entire stream read
-    String lineSeparator = System.getProperty("line.separator");
-
-    try {
-      while(scanner.hasNextLine()) {
-        fileContents.append(scanner.nextLine());
-        if (scanner.hasNextLine()) {
-          fileContents.append(lineSeparator);
-        }
-      }
-    } finally {
-      scanner.close();
-    }
-    return fileContents.toString();
   }
 
   public SingleOperationResult createDocument(String id,InputStream docSrc,Collection<String> collections) throws OperationException {
@@ -114,7 +96,7 @@ public class MongoDBDocumentManager implements DocumentManager {
 
   public SingleOperationResult updateDocument(String id,InputStream docSrc) throws OperationException {
     try {
-      Document document = Document.parse(readInputStreamIntoString(docSrc));
+      Document document = Document.parse(IOUtils.readInputStreamIntoString(docSrc));
       MongoCollection<Document> col = library.getCollection();
       col.replaceOne(Filters.eq("_id", new ObjectId(id)),document);
       return new GenericSingleOperationResult(true,"Successfully updated document with _id: '" + id + "'","");

@@ -145,7 +145,7 @@ public class MongoDBConnection implements Connection {
     ArrayList<LibraryInfo> info = new ArrayList<LibraryInfo>();
     MongoIterable<String> collectionNames = database.listCollectionNames();
     for (String name: collectionNames) {
-      info.add(new LibraryInfo(name,true));
+      info.add(new LibraryInfo(name,true,false));
     }
     return info;
   }

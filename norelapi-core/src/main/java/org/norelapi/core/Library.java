@@ -44,5 +44,6 @@ public interface Library {
 
   public LibraryInfo getInfo();
 
-  public DocumentManager createDocumentManager();
+  public DocumentManager createDocumentManager() throws UnsupportedOperationException;
+  public KeyManager createKeyManager() throws UnsupportedOperationException;
 }

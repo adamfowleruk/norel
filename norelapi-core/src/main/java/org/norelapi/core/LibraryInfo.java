@@ -38,10 +38,12 @@ package org.norelapi.core;
 public class LibraryInfo {
   private String alias = "";
   private boolean supportsDocumentManager = true;
+  private boolean supportsKeyManager = false;
 
-  public LibraryInfo(String alias, boolean supportsDocMgr) {
+  public LibraryInfo(String alias, boolean supportsDocMgr, boolean supportsKeyMgr) {
     this.alias = alias;
     this.supportsDocumentManager = supportsDocMgr;
+    this.supportsKeyManager = supportsKeyMgr;
   }
 
   public String getAlias() {
@@ -50,5 +52,9 @@ public class LibraryInfo {
 
   public boolean hasDocumentManager() {
     return supportsDocumentManager;
+  }
+
+  public boolean hasKeyManager() {
+    return supportsKeyManager;
   }
 }

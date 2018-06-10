@@ -21,6 +21,9 @@
  ******************************************************************************/
 package org.norelapi.impl.mongodb;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoDatabase;
@@ -31,6 +34,7 @@ import com.mongodb.MongoCredential;
 
 import org.norelapi.core.Connection;
 import org.norelapi.core.ConnectionException;
+import org.norelapi.core.InvalidStateException;
 import org.norelapi.core.NoSuchEntityException;
 import org.norelapi.core.OperationException;
 import org.norelapi.core.Library;
@@ -44,6 +48,7 @@ import java.util.ArrayList;
  * MongoDB implementation of the NoREL API Connection interface.
  */
 public class MongoDBConnection implements Connection {
+  private static final Logger logger = LogManager.getLogger();
   private Hashtable<String,Object> config = null;
   private Status status = Status.Initialising;
 
@@ -66,6 +71,12 @@ public class MongoDBConnection implements Connection {
     status = Status.Initialised;
   }
 
+  private void connectedCheck() throws InvalidStateException {
+    if (Status.Connected != status) {
+      throw new InvalidStateException("Cannot proceed - not connected",Status.Connected.toString(),status.toString());
+    }
+  }
+
   public void connect() throws ConnectionException {
     status = Status.Connecting;
     // TODO ensure this is shared between all MongoDB Connection instances with the same config
@@ -74,29 +85,44 @@ public class MongoDBConnection implements Connection {
     boolean withSsl = ((Boolean)config.get(MongoDBDriver.SSL_ENABLED)).booleanValue();
 
     String dbName = (String)config.get(MongoDBDriver.DATABASE);
-    credential = MongoCredential.createCredential(
-      (String)config.get(MongoDBDriver.USERNAME), 
-      dbName, 
-      ((String)config.get(MongoDBDriver.PASSWORD)).toCharArray()
-    );
+    String username = (String)config.get(MongoDBDriver.USERNAME);
+    String password = ((String)config.get(MongoDBDriver.PASSWORD));
+    if (null != username) {
+      logger.trace("Username and password set");
+      credential = MongoCredential.createCredential(
+        username , 
+        dbName, 
+        password.toCharArray()
+      );
+    }
     ArrayList<ServerAddress> servers = new ArrayList<ServerAddress>();
     String hostStr = (String)config.get(MongoDBDriver.CONNECTION_STRING);
     String[] hosts = hostStr.split(",");
     for (String host : hosts) {
+      logger.trace("Host: {}",host);
       String[] parts = host.split(":");
+      logger.trace("Host part: {}",parts[0]);
       int port = 27017;
-      if (parts.length > 0) {
+      if (parts.length > 1) {
+        logger.trace("Port part: "+parts[1]);
         port = Integer.parseInt(parts[1]);
       }
       servers.add(new ServerAddress(parts[0],port));
     }
-    builder = builder.credential(credential).applyToSslSettings(bd -> bd.enabled(withSsl))
+    if (null != credential) {
+      logger.trace("Credentials set");
+      builder = builder.credential(credential);
+    }
+    builder = builder.applyToSslSettings(bd -> bd.enabled(withSsl))
       .applyToClusterSettings(bd ->bd.hosts(servers)); 
     options = builder.build();
+    logger.trace("Creating MongoDBClient");
     mongoClient = MongoClients.create(
       options
     );
+    logger.trace("Fetching DB named: {}",dbName);
     database = mongoClient.getDatabase(dbName);
+    logger.trace("MongoDB Database: {}",database);
     status = Status.Connected;
   }
   public void disconnect() throws ConnectionException {
@@ -114,7 +140,8 @@ public class MongoDBConnection implements Connection {
     status = Status.Disconnected;
   }
 
-  public Collection<LibraryInfo> listLibraries() {
+  public Collection<LibraryInfo> listLibraries() throws InvalidStateException {
+    connectedCheck();
     ArrayList<LibraryInfo> info = new ArrayList<LibraryInfo>();
     MongoIterable<String> collectionNames = database.listCollectionNames();
     for (String name: collectionNames) {
@@ -122,7 +149,8 @@ public class MongoDBConnection implements Connection {
     }
     return info;
   }
-  public Library getLibrary(String alias) throws NoSuchEntityException {
+  public Library getLibrary(String alias) throws NoSuchEntityException, InvalidStateException {
+    connectedCheck();
     MongoDBLibrary library = new MongoDBLibrary(this,alias);
     // TODO we should probably track these internally...
     return library;

@@ -21,6 +21,9 @@
  ******************************************************************************/
 package org.norelapi.core;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.Hashtable;
 import java.util.TreeSet;
 import java.io.File;
@@ -50,6 +53,7 @@ import javax.json.JsonArray;
  * Once you have drivers and individual connection configuration loaded, you can request a connection instance.
  */
 public class ConnectionManager {
+  private static final Logger logger = LogManager.getLogger();
   private Hashtable<String,DriverInfo> driverInfos = new Hashtable<String,DriverInfo>();
 
   private Hashtable<String,Driver> drivers = new Hashtable<String,Driver>();
@@ -87,7 +91,7 @@ public class ConnectionManager {
     if (null != rin) {
       addJsonDriverConfig(rin);
     } else {
-      System.out.println("FATAL: Could not find default NoREL API Driver library in JAR file!");
+      logger.trace("FATAL: Could not find default NoREL API Driver library in JAR file!");
     }
     rin = getClass().getClassLoader().getResourceAsStream("norelapi.drivers.json");
     if (null != rin) {
@@ -133,7 +137,7 @@ public class ConnectionManager {
           ConfigurationPropertyInfo pInfo = dInfo.getProperty(key);
           if (null == pInfo) {
             // warn
-            System.out.println("No such property: '" + key + "' for driver: '" + dInfo.getAlias() + "' of connection: '" + alias + "'. Skipping.");
+            logger.trace("No such property: '{}' for driver: '{}' of connection: '{}'. Skipping.",key,dInfo.getAlias(),alias);
           } else {
             ConfigurationPropertyInfo.Type type = pInfo.getType();
             try {
@@ -153,8 +157,8 @@ public class ConnectionManager {
               }
             } catch (ClassCastException cnfe) {
               cnfe.printStackTrace();
-              System.out.println("Property key: '" + key + "' for driver: '" + dInfo.getAlias() + "' of connection: '" + alias + 
-                "' was not of the expected type: '" + type + "'. Skipping.");
+              logger.trace("Property key: '{}' for driver: '{}' of connection: '{}' was not of the expected type: '{}'. Skipping.",
+                key,dInfo.getAlias(),alias,type);
             }
           }
         }
@@ -181,7 +185,7 @@ public class ConnectionManager {
       DriverInfo info = d.getInfo();
       driverInfos.put(name,info);
       drivers.put(name,d);
-      System.out.println("Added driver with alias: " + name);
+      logger.trace("Added driver with alias: '{}'", name);
     } catch (ClassNotFoundException cnfe) {
       throw new NoSuchEntityException("Class could not be found for driver '" + name + "'",name,cnfe);
     } catch (InstantiationException ie) {

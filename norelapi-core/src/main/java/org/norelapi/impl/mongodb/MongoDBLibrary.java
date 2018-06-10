@@ -21,7 +21,11 @@
  ******************************************************************************/
 package org.norelapi.impl.mongodb;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
 
 import org.norelapi.core.Library;
@@ -39,6 +43,7 @@ import org.norelapi.core.DocumentManager;
  * are set against a Collection in MongoDB not a Database.
  */
 public class MongoDBLibrary implements Library {
+  private static final Logger logger = LogManager.getLogger();
   private MongoDBConnection connection;
   private MongoCollection<Document> collection;
   private String alias; // collection alias
@@ -46,7 +51,10 @@ public class MongoDBLibrary implements Library {
   protected MongoDBLibrary(MongoDBConnection conn,String alias) {
     this.connection = conn;
     this.alias = alias;
-    collection = conn.getDatabase().getCollection(alias);
+    logger.trace("MongoDB Library(Collection) alias: {}",alias);
+    MongoDatabase db = this.connection.getDatabase();
+    logger.trace("MongoDB database: {}",db);
+    collection = db.getCollection(alias);
   }
 
   public boolean isOpen() {

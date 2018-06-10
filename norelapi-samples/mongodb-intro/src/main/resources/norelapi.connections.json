@@ -3,9 +3,7 @@
     "driver": "mongodb",
     "config": {
       "connectionString": "localhost",
-      "username": "user",
-      "password": "pass",
-      "database": "default",
+      "database": "test",
       "sslEnabled": false
     }
   }

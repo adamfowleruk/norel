@@ -48,7 +48,14 @@ public class DynamoDBLibrary implements Library {
     logger.trace("DynamoDB Library(Table) alias: {}",alias);
     DynamoDB db = this.connection.getDynamoDB();
     logger.trace("DynamoDB database: {}",db);
-    table = dynamoDB.getTable(alias);
+    table = db.getTable(alias);
+  }
+  
+  public boolean hasKeyManager() throws UnsupportedOperationException {
+    return true;
+  }
+  public boolean hasDocumentManager() throws UnsupportedOperationException {
+    return true;
   }
 
   public boolean isOpen() {

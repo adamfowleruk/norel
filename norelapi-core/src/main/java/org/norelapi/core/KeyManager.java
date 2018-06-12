@@ -23,6 +23,7 @@ package org.norelapi.core;
 
 import java.util.Collection;
 import java.io.InputStream;
+import java.io.Serializable;
 
 /**
  * Represents a manager class to perform Key-Value operations on the underlying 
@@ -36,7 +37,7 @@ public interface KeyManager {
   public SingleOperationResult putKey(String key,Serializable value) throws OperationException;
 
   public SingleOperationResult getKey(String key) throws OperationException;
-  
+
   public SingleOperationResult deleteKey(String key) throws OperationException;
 
   // TODO complex, optional, operations

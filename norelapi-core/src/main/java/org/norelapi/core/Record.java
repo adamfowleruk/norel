@@ -21,22 +21,26 @@
  ******************************************************************************/
 package org.norelapi.core;
 
-import java.io.InputStream;
-
 /**
- * Represents the result of a single operation. E.g. Document add
+ * Tagging generics interface for operation result type
  */
-public class SingleOperationResult<T extends Result> extends OperationResult {
-  private T result = null;
+public abstract class Record extends Result {
+  private String id = null;
 
-  public SingleOperationResult(boolean success,String message,Exception exc) {
-    super(success,message,exc);
+  public Record() {
+    super();
   }
-  public SingleOperationResult(boolean success,String message,T res) {
-    super(success,message);
-    this.result = res;
+
+  public Record(String value) {
+    super(value);
   }
-  public T getResult() {
-    return result;
+
+  public Record(String value,String id) {
+    super(value);
+    this.id = id;
+  }
+
+  public String getId() {
+    return id;
   }
 }

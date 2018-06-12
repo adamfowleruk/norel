@@ -21,6 +21,9 @@
  ******************************************************************************/
 package org.norelapi.impl.dynamodb;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import org.norelapi.core.Connection;
 import org.norelapi.core.Driver;
 import org.norelapi.core.DriverInfo;
@@ -40,6 +43,7 @@ public class DynamoDBDriver implements Driver {
   private static final String NAME = "dynamodb";
   private static final String CLASSNAME = "org.norelapi.impl.dynamodb.DynamoDBConnection"; 
 
+  public static final String DATABASE = "database"; 
   public static final String CONNECTION_STRING = "connectionString"; 
   public static final String USERNAME = "username"; 
   public static final String PASSWORD = "password"; 
@@ -48,7 +52,7 @@ public class DynamoDBDriver implements Driver {
   /**
    * Default constructor for classloading
    */
-  public DynamoDBDBDriver() {}
+  public DynamoDBDriver() {}
 
   public DriverInfo getInfo() {
     ArrayList<ConfigurationPropertyInfo> props = new ArrayList<ConfigurationPropertyInfo>();

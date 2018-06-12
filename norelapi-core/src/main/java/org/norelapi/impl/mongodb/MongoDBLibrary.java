@@ -32,6 +32,7 @@ import org.norelapi.core.Library;
 import org.norelapi.core.LibraryInfo;
 import org.norelapi.core.UnsupportedOperationException;
 import org.norelapi.core.DocumentManager;
+import org.norelapi.core.KeyManager;
 
 /**
  * Implements the NoREL API Library interface for MongoDB.
@@ -56,6 +57,13 @@ public class MongoDBLibrary implements Library {
     MongoDatabase db = this.connection.getDatabase();
     logger.trace("MongoDB database: {}",db);
     collection = db.getCollection(alias);
+  }
+  
+  public boolean hasKeyManager() throws UnsupportedOperationException {
+    return false;
+  }
+  public boolean hasDocumentManager() throws UnsupportedOperationException {
+    return true;
   }
 
   public boolean isOpen() {

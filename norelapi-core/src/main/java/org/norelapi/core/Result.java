@@ -19,36 +19,21 @@
  * limitations under the License.
  *
  ******************************************************************************/
-package org.norelapi.impl.shared;
+package org.norelapi.core;
 
-import org.norelapi.core.SingleOperationResult;
-import org.norelapi.core.InvalidStateException;
+public class Result {
+  protected String payload;
 
-import java.io.InputStream;
-import java.io.ByteArrayInputStream;
-import java.nio.charset.StandardCharsets;
+  public Result() {
+    payload = null;
 
-/**
- * A likely common implementation where the response is already in memory as a string.
- */
-public class GenericSingleOperationResult extends SingleOperationResult {
-  private String payload;
+  }
 
-  public GenericSingleOperationResult(boolean success,String message,Exception exc, String payload) {
-    super(success,message,exc);
+  public Result(String payload) {
     this.payload = payload;
   }
 
-  public GenericSingleOperationResult(boolean success,String message,String payload) {
-    super(success,message);
-    this.payload = payload;
-  }
-
-  public String getResponseAsString() throws InvalidStateException {
+  public String getPayload() {
     return payload;
-  }
-
-  public InputStream getResponseAsStream() throws InvalidStateException {
-    return new ByteArrayInputStream(payload.getBytes(StandardCharsets.UTF_8));
   }
 }

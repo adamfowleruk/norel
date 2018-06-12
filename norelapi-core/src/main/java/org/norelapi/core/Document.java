@@ -21,22 +21,20 @@
  ******************************************************************************/
 package org.norelapi.core;
 
-import java.io.InputStream;
-
-/**
- * Represents the result of a single operation. E.g. Document add
- */
-public class SingleOperationResult<T extends Result> extends OperationResult {
-  private T result = null;
-
-  public SingleOperationResult(boolean success,String message,Exception exc) {
-    super(success,message,exc);
+public abstract class Document extends Record {
+  
+  /**
+   * A Document that has not been given an ID yet (getId() returns null)
+   */
+  public Document() {
+    super();
   }
-  public SingleOperationResult(boolean success,String message,T res) {
-    super(success,message);
-    this.result = res;
+
+  public Document(String value) {
+    super(value);
   }
-  public T getResult() {
-    return result;
+
+  public Document(String value,String id) {
+    super(value,id);
   }
 }

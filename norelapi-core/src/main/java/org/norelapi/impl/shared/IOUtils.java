@@ -27,6 +27,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.IOException;
 import java.util.Scanner;
+import java.io.BufferedReader;
 
 public class IOUtils {
   public static String readInputStreamIntoString(InputStream docSrc) throws OperationException {

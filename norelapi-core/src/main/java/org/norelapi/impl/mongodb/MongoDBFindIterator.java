@@ -26,29 +26,33 @@ import com.mongodb.client.FindIterable;
 import org.bson.Document;
 
 import org.norelapi.core.SingleOperationResult;
-import org.norelapi.impl.shared.GenericSingleOperationResult;
+import org.norelapi.core.Result;
+import org.norelapi.impl.shared.JsonDocument;
 
 import java.util.Iterator;
 
 /**
  * A thin NoREL API wrapper around MongoDB's iterator
  */
-public class MongoDBFindIterator<SingleOperationResult> implements Iterator<SingleOperationResult> {
+public class MongoDBFindIterator<T extends SingleOperationResult> implements Iterator<T> {
   private FindIterable<Document> srcIter;
   private MongoCursor<Document> iterator;
   
   public MongoDBFindIterator(FindIterable<Document> srcIter) {
     this.srcIter = srcIter;
     iterator = srcIter.iterator();
+
   }
   
   public boolean hasNext() {
     return iterator.hasNext();
   }
 
-  public SingleOperationResult next() {
+  public T next() {
     Document nextDoc = iterator.next();
-    return (SingleOperationResult)new GenericSingleOperationResult(true,"Successfully loaded document",nextDoc.toJson());
+    return (T) new SingleOperationResult<JsonDocument>(true,"Successfully loaded document",
+      new JsonDocument(nextDoc.toJson(),nextDoc.get("_id").toString())
+    );
   }
 
   public void remove() {

@@ -23,6 +23,7 @@ package org.norelapi.impl.shared;
 
 import org.norelapi.core.SingleOperationResult;
 import org.norelapi.core.BulkOperationResult;
+import org.norelapi.core.Result;
 
 import java.util.Iterator;
 
@@ -31,19 +32,19 @@ import java.util.Iterator;
  * of a single iterator as it's content.
  */
 public class GenericBulkOperationResult extends BulkOperationResult {
-  private Iterator<SingleOperationResult> iterator;
+  private Iterator<SingleOperationResult<Result>> iterator;
 
-  public GenericBulkOperationResult(boolean success,String message,Exception exc,Iterator<SingleOperationResult> iter) {
+  public GenericBulkOperationResult(boolean success,String message,Exception exc,Iterator<SingleOperationResult<Result>> iter) {
     super(success,message,exc);
     iterator = iter;
   }
   
-  public GenericBulkOperationResult(boolean success,String message,Iterator<SingleOperationResult> iter) {
+  public GenericBulkOperationResult(boolean success,String message,Iterator<SingleOperationResult<Result>> iter) {
     super(success,message);
     iterator = iter;
   }
 
-  public Iterator<SingleOperationResult> getResultIterator() {
+  public Iterator<SingleOperationResult<Result>> getResultIterator() {
     return iterator;
   }
 }

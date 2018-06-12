@@ -28,20 +28,32 @@ import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.amazonaws.services.dynamodbv2.document.DynamoDB;
+import com.amazonaws.services.dynamodbv2.document.Table;
+import com.amazonaws.services.dynamodbv2.model.ListTablesResult;
+import com.amazonaws.services.dynamodbv2.document.TableCollection;
 
 import org.norelapi.impl.shared.IOUtils;
 import org.norelapi.core.UnsupportedOperationException;
 import org.norelapi.core.DocumentManager;
 import org.norelapi.core.SingleOperationResult;
+import org.norelapi.core.ConnectionException;
+import org.norelapi.core.Connection;
+import org.norelapi.core.Connection.Status;
 import org.norelapi.core.BulkOperationResult;
 import org.norelapi.core.OperationException;
-import org.norelapi.impl.shared.GenericSingleOperationResult;
+import org.norelapi.core.OperationException;
+import org.norelapi.core.NoSuchEntityException;
+import org.norelapi.core.InvalidStateException;
+import org.norelapi.core.Library;
+import org.norelapi.core.LibraryInfo;
 import org.norelapi.impl.shared.GenericBulkOperationResult;
 
 import java.io.InputStream;
 import java.util.Iterator;
+import java.util.Hashtable;
 import java.util.Collection;
 import java.util.Scanner;
+import java.util.ArrayList;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
@@ -55,6 +67,10 @@ public class DynamoDBConnection implements Connection {
 
   /** Default constructor for class loading */
   public DynamoDBConnection(){}
+
+  public Status getStatus() {
+    return status;
+  }
 
   public void configure(Hashtable<String,Object> config) throws OperationException {
     this.config = config;
@@ -85,7 +101,7 @@ public class DynamoDBConnection implements Connection {
       .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(hostStr, region))
       .build();
 
-    dynamoDB = new DynamoDB(client);
+    dynamodb = new DynamoDB(client);
     
     status = Status.Connected;
   }
@@ -108,7 +124,7 @@ public class DynamoDBConnection implements Connection {
     connectedCheck();
     ArrayList<LibraryInfo> info = new ArrayList<LibraryInfo>();
 
-    TableCollection<ListTablesResult> tables = dynamoDB.listTables();
+    TableCollection<ListTablesResult> tables = dynamodb.listTables();
     Iterator<Table> iterator = tables.iterator();
 
     logger.trace("Listing table names");
@@ -123,7 +139,7 @@ public class DynamoDBConnection implements Connection {
   }
   public Library getLibrary(String alias) throws NoSuchEntityException, InvalidStateException {
     connectedCheck();
-    DynamoDBDBLibrary library = new DynamoDBDBLibrary(this,alias);
+    DynamoDBLibrary library = new DynamoDBLibrary(this,alias);
     // TODO we should probably track these internally...
     return library;
   }

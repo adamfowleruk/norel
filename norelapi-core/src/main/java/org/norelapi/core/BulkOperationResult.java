@@ -32,5 +32,5 @@ public abstract class BulkOperationResult extends OperationResult {
     super(success,message);
   }
 
-  public abstract Iterator<SingleOperationResult> getResultIterator();
+  public abstract Iterator<SingleOperationResult<Result>> getResultIterator();
 }

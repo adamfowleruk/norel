@@ -21,6 +21,9 @@
  ******************************************************************************/
 package org.norelapi.impl.mongodb;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
@@ -33,12 +36,13 @@ import com.mongodb.client.FindIterable;
 import org.bson.Document;
 
 import org.norelapi.impl.shared.IOUtils;
+import org.norelapi.impl.shared.JsonDocument;
+import org.norelapi.core.Result;
 import org.norelapi.core.UnsupportedOperationException;
 import org.norelapi.core.DocumentManager;
 import org.norelapi.core.SingleOperationResult;
 import org.norelapi.core.BulkOperationResult;
 import org.norelapi.core.OperationException;
-import org.norelapi.impl.shared.GenericSingleOperationResult;
 import org.norelapi.impl.shared.GenericBulkOperationResult;
 
 import java.io.InputStream;
@@ -52,6 +56,7 @@ import java.io.InputStreamReader;
  * MongoDB implementation of the NoREL API DocumentManager interface
  */
 public class MongoDBDocumentManager implements DocumentManager {
+  private static final Logger logger = LogManager.getLogger();
   private MongoDBLibrary library;
 
   protected MongoDBDocumentManager(MongoDBLibrary library) {
@@ -68,9 +73,9 @@ public class MongoDBDocumentManager implements DocumentManager {
         document.putIfAbsent("_id",id);
       }
       library.getCollection().insertOne(document);
-      return new GenericSingleOperationResult(true,"Successfully created Document with _id: '" + id + "'","");
+      return new SingleOperationResult<Result>(true,"Successfully created Document with _id: '" + id + "'",new Result()); // TODO should this be a jsondocument with an ID???
     } catch (Exception e) {
-      return new GenericSingleOperationResult(false,"Error executing MongoDB listDocuments",e,"");
+      return new SingleOperationResult<Result>(false,"Error executing MongoDB createDocument",e);
     }
   }
 
@@ -99,9 +104,9 @@ public class MongoDBDocumentManager implements DocumentManager {
       Document document = Document.parse(IOUtils.readInputStreamIntoString(docSrc));
       MongoCollection<Document> col = library.getCollection();
       col.replaceOne(Filters.eq("_id", new ObjectId(id)),document);
-      return new GenericSingleOperationResult(true,"Successfully updated document with _id: '" + id + "'","");
+      return new SingleOperationResult<Result>(true,"Successfully updated document with _id: '" + id + "'",new Result());
     } catch (Exception e) {
-      return new GenericSingleOperationResult(false,"Error executing MongoDB listDocuments",e,"");
+      return new SingleOperationResult<Result>(false,"Error executing MongoDB updateDocument",e);
     }
   }
 
@@ -112,20 +117,21 @@ public class MongoDBDocumentManager implements DocumentManager {
 
   public SingleOperationResult deleteDocument(String id) throws OperationException {
     try {
+      logger.trace("_id: {}",id);
       library.getCollection().deleteOne(Filters.eq("_id", new ObjectId(id)));
-      return new GenericSingleOperationResult(true,"Successfully deleted document with _id: '" + id + "'","");
+      return new SingleOperationResult<Result>(true,"Successfully deleted document with _id: '" + id + "'",new Result());
     } catch (Exception e) {
-      return new GenericSingleOperationResult(false,"Error executing MongoDB listDocuments",e,"");
+      return new SingleOperationResult<Result>(false,"Error executing MongoDB deleteDocument",e);
     }
   }
 
   public SingleOperationResult getDocument(String id) throws OperationException {
     try {
       Document document = library.getCollection().find(Filters.eq("_id", new ObjectId(id))).first();
-      return new GenericSingleOperationResult(true,
-        "Successfully retreived document with _id: '" + id + "'",document.toJson());
+      return new SingleOperationResult<JsonDocument>(true,
+        "Successfully retreived document with _id: '" + id + "'",new JsonDocument(document.toJson(),id));
     } catch (Exception e) {
-      return new GenericSingleOperationResult(false,"Error executing MongoDB listDocuments",e,"");
+      return new SingleOperationResult<Result>(false,"Error executing MongoDB getDocument",e);
     }
   }
   
@@ -140,7 +146,7 @@ public class MongoDBDocumentManager implements DocumentManager {
       }
       FindIterable<Document> iter = library.getCollection().find();
       return new GenericBulkOperationResult(true,"Successfully listed documents of collection: '" + collection + "'",
-        new MongoDBFindIterator<SingleOperationResult>(iter));
+        new MongoDBFindIterator<SingleOperationResult<Result>>(iter));
     } catch (Exception e) {
       return new GenericBulkOperationResult(false,"Error executing MongoDB listDocuments",e,null);
     }
@@ -164,7 +170,7 @@ public class MongoDBDocumentManager implements DocumentManager {
   public BulkOperationResult findDocuments(String indexAlias,String indexValue) throws OperationException {
     try {
       FindIterable<Document> iter = library.getCollection().find(Filters.eq(indexAlias,indexValue));
-      return new GenericBulkOperationResult(true,"Found documents",new MongoDBFindIterator<SingleOperationResult>(iter));
+      return new GenericBulkOperationResult(true,"Found documents",new MongoDBFindIterator<SingleOperationResult<Result>>(iter));
     } catch (Exception e) {
       return new GenericBulkOperationResult(false,"Error executing MongoDB findDocuments",e,null);
     }

@@ -21,22 +21,21 @@
  ******************************************************************************/
 package org.norelapi.core;
 
-import java.io.InputStream;
+public abstract class KeyValue extends Record {
 
-/**
- * Represents the result of a single operation. E.g. Document add
- */
-public class SingleOperationResult<T extends Result> extends OperationResult {
-  private T result = null;
+  public KeyValue() {
+    super();
+  }
 
-  public SingleOperationResult(boolean success,String message,Exception exc) {
-    super(success,message,exc);
+  public KeyValue(String value) {
+    super(value);
   }
-  public SingleOperationResult(boolean success,String message,T res) {
-    super(success,message);
-    this.result = res;
+
+  public KeyValue(String value,String key) {
+    super(value,key);
   }
-  public T getResult() {
-    return result;
+
+  public String getKey() {
+    return getId();
   }
 }

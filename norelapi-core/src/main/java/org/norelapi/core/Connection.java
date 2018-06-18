@@ -42,5 +42,6 @@ public interface Connection {
   public void forceDisconnect() throws ConnectionException;
 
   public Collection<LibraryInfo> listLibraries() throws InvalidStateException;
+  public SingleOperationResult<Result> createLibrary(String alias) throws OperationException;
   public Library getLibrary(String alias) throws NoSuchEntityException,InvalidStateException;
 }

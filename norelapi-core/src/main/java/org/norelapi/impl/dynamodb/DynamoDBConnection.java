@@ -137,6 +137,28 @@ public class DynamoDBConnection implements Connection {
 
     return info;
   }
+  public SingleOperationResult createLibrary(String alias) throws OperationException {
+    try {
+      List<AttributeDefinition> attributeDefinitions= new ArrayList<AttributeDefinition>();
+      attributeDefinitions.add(new AttributeDefinition().withAttributeName("Id").withAttributeType("N"));
+
+      List<KeySchemaElement> keySchema = new ArrayList<KeySchemaElement>();
+      keySchema.add(new KeySchemaElement().withAttributeName("Id").withKeyType(KeyType.HASH));
+        
+      CreateTableRequest request = new CreateTableRequest()
+        .withTableName(tableName)
+        .withKeySchema(keySchema)
+        .withAttributeDefinitions(attributeDefinitions);
+
+      Table table = dynamodb.createTable(request);
+
+      table.waitForActive();
+
+      return new SingleOperationResult<Result>(true,"Successfully created library (DynamoDB Table)",new Result(alias));
+    } catch (Exception e) {
+      return new SingleOperationResult<Result>(false,"Successfully created library (DynamoDB Table)",e);
+    }
+  }
   public Library getLibrary(String alias) throws NoSuchEntityException, InvalidStateException {
     connectedCheck();
     DynamoDBLibrary library = new DynamoDBLibrary(this,alias);

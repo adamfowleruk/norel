@@ -30,6 +30,7 @@
   <modules>
     <module>norelapi-core</module>
     <module>norelapi-samples/mongodb-intro</module>
+    <module>norelapi-samples/dynamodb-intro</module>
   </modules>
 
   <build>

@@ -149,6 +149,16 @@ public class MongoDBConnection implements Connection {
     }
     return info;
   }
+
+  public SingleOperationResult createLibrary(String alias) throws OperationException {
+    try {
+      
+      return new SingleOperationResult<Result>(true,"Successfully created library (MongoDB Collection)",new Result(alias));
+    } catch (Exception e) {
+      return new SingleOperationResult<Result>(false,"Successfully created library (MongoDB Collection)",e);
+    }
+  }
+
   public Library getLibrary(String alias) throws NoSuchEntityException, InvalidStateException {
     connectedCheck();
     MongoDBLibrary library = new MongoDBLibrary(this,alias);

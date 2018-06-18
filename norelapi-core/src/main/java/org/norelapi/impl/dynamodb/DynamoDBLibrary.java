@@ -50,12 +50,12 @@ public class DynamoDBLibrary implements Library {
     logger.trace("DynamoDB database: {}",db);
     table = db.getTable(alias);
   }
-  
+
   public boolean hasKeyManager() throws UnsupportedOperationException {
     return true;
   }
   public boolean hasDocumentManager() throws UnsupportedOperationException {
-    return true;
+    return false;
   }
 
   public boolean isOpen() {
@@ -67,8 +67,7 @@ public class DynamoDBLibrary implements Library {
   }
 
   public DocumentManager createDocumentManager() {
-    DynamoDBDocumentManager mgr = new DynamoDBDocumentManager(this);
-    return mgr;
+    return null;
   }
 
   public KeyManager createKeyManager() {

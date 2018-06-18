@@ -1,0 +1,12 @@
+{
+  "dynamodb-local": {
+    "driver": "dynamodb",
+    "config": {
+      "connectionString": "http://localhost:8000",
+      "region": "eu-west-1",
+      "database": "",
+      "username": "",
+      "password": ""
+    }
+  }
+}
